@@ -29,6 +29,10 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
+       sass: {
+                files: ['<%= yeoman.app %>/styles/scss/*.scss'],
+                tasks: ['sass']
+            },
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
@@ -44,10 +48,10 @@ module.exports = function (grunt) {
         files: ['test/spec/{,*/}*.js'],
         tasks: ['newer:jshint:test', 'karma']
       },
-      compass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer']
-      },
+      // compass: {
+      //   files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+      //   tasks: ['compass:server', 'autoprefixer']
+      // },
       gruntfile: {
         files: ['Gruntfile.js']
       },
@@ -61,6 +65,19 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
+    },
+
+    sass: {
+        dist: {
+            files: [{
+                expand: true,
+                cwd: '.',
+                src: ['<%= yeoman.app %>/styles/scss/*.scss'],
+                dest: '<%= yeoman.app %>/styles',
+                ext: '.css',
+                flatten: true
+            }]
+        }
     },
 
     // The actual grunt server settings
@@ -204,33 +221,33 @@ module.exports = function (grunt) {
     },
 
     // Compiles Sass to CSS and generates necessary files if requested
-    compass: {
-      options: {
-        sassDir: '<%= yeoman.app %>/styles',
-        cssDir: '.tmp/styles',
-        generatedImagesDir: '.tmp/images/generated',
-        imagesDir: '<%= yeoman.app %>/images',
-        javascriptsDir: '<%= yeoman.app %>/scripts',
-        fontsDir: '<%= yeoman.app %>/styles/fonts',
-        importPath: './bower_components',
-        httpImagesPath: '/images',
-        httpGeneratedImagesPath: '/images/generated',
-        httpFontsPath: '/styles/fonts',
-        relativeAssets: false,
-        assetCacheBuster: false,
-        raw: 'Sass::Script::Number.precision = 10\n'
-      },
-      dist: {
-        options: {
-          generatedImagesDir: '<%= yeoman.dist %>/images/generated'
-        }
-      },
-      server: {
-        options: {
-          sourcemap: true
-        }
-      }
-    },
+    // compass: {
+    //   options: {
+    //     sassDir: '<%= yeoman.app %>/styles',
+    //     cssDir: '.tmp/styles',
+    //     generatedImagesDir: '.tmp/images/generated',
+    //     imagesDir: '<%= yeoman.app %>/images',
+    //     javascriptsDir: '<%= yeoman.app %>/scripts',
+    //     fontsDir: '<%= yeoman.app %>/styles/fonts',
+    //     importPath: './bower_components',
+    //     httpImagesPath: '/images',
+    //     httpGeneratedImagesPath: '/images/generated',
+    //     httpFontsPath: '/styles/fonts',
+    //     relativeAssets: false,
+    //     assetCacheBuster: false,
+    //     raw: 'Sass::Script::Number.precision = 10\n'
+    //   },
+    //   dist: {
+    //     options: {
+    //       generatedImagesDir: '<%= yeoman.dist %>/images/generated'
+    //     }
+    //   },
+    //   server: {
+    //     options: {
+    //       sourcemap: true
+    //     }
+    //   }
+    // },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -401,13 +418,13 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'compass:server'
+        // 'compass:server'
       ],
       test: [
-        'compass'
+        // 'compass'
       ],
       dist: [
-        'compass:dist',
+        // 'compass:dist',
         'imagemin',
         'svgmin'
       ]
@@ -419,7 +436,28 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    protractor: {
+        options: {
+            keepAlive: true, // If false, the grunt process stops when the test fails.
+            noColor: false, // If true, protractor will not use colors in its output.
+            args: {}
+        },
+        local: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
+            options: {
+                configFile: "protractor.config.js", // Target-specific config file
+                args: {
+                    baseUrl: "http://127.0.0.1:9001",
+                    params: {
+                        path: "/",
+                        client: grunt.option("client") || 'ford'
+                    }
+                } // Target-specific arguments
+            }
+        }
     }
+
   });
 
 
@@ -429,6 +467,7 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
+      'sass',
       'clean:server',
       'wiredep',
       'concurrent:server',
@@ -455,6 +494,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
+    'sass',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',

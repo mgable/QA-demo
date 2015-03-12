@@ -9,9 +9,10 @@
  */
 angular.module('marketshareQaDemoApp')
   .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+
+  	$scope.templates = [{title: "one"}, {title: "two"}, {title: "three"}];
+
+    $scope.isTemplateTitleUnique = function(scenario) {
+        return ! _.findWhere($scope.templates, {title: scenario});
+    };
   });

@@ -1,18 +1,37 @@
 <div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
   <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
+    Now let's create an Action Scenario template
   </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+  <p>
+    <form name="getInfo" novalidate>
+      <label>What is the template name?
+          <input type="text" ng-model="data.name" ng-minlength="2" ng-maxlength="256" ng-pattern='/^[^\\\/\?\:\*"><|]+$/' required validator="isTemplateTitleUnique" error-type="isUnique" >
+      </label>
+      <div class="alert alert-danger" ng-show="getInfo.$error.isUnique" role="alert">
+          The template name &quot;{{data.name}}&quot; has been taken. Please choose another name.
+        </div>
+    </form>
+  </p>
+  <p><a class="btn btn-lg btn-success" ng-disabled="getInfo.$invalid || getInfo.$pristine" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+</div>
+
+<div>
+  <dl>
+    <dt>Scenario Templates - Name & Description</dt>
+    <dd>As a user, I can give a name & description to the template</dd>
+  </dl>
+  <ul>
+    <li>Template name is required</li>
+    <li>Template name has a minimum of two characters</li>
+    <li>Template name has a maximum of 256 characters</li>
+    <li>Template name can not have the follwoing characters: \ / ? : * " > &lt; | </li>
+    <li>Template description is not required</li>
+    <li>Template description has a maximum of 256 characters</li>
+    <li>Template names should be unique.</li>
+  </ul>
 </div>
 
 <div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
-
   <h4>Angular</h4>
   <p>
     AngularJS is a toolset for building the framework most suited to your application development.
@@ -20,4 +39,10 @@
 
   <h4>Karma</h4>
   <p>Spectacular Test Runner for JavaScript.</p>
+
+  <h4>Jasmine</h4>
+  <p>A behavior-driven development framework for testing JavaScript code</p>
+
+  <h4>Protractor</h4>
+  <p>An end-to-end test framework for AngularJS applications</p>
 </div>
