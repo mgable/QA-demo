@@ -10,6 +10,7 @@ describe('Scenario Templates', function() {
 
 	describe("name field", function(){
 
+
 		it("should require a name", function(){
 			expect(element(by.css('#submitButton')).getAttribute('disabled')).toBeTruthy();
 		});	
@@ -22,6 +23,7 @@ describe('Scenario Templates', function() {
 			expect(element(by.css('#submitButton')).getAttribute('disabled')).toBeFalsy();
 		});	
 
+
 		it("should prohibit a name over 256 characters", function(){
 			var inputField = element(by.model("data.name"));
 			inputField.sendKeys("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
@@ -29,6 +31,7 @@ describe('Scenario Templates', function() {
 			inputField.sendKeys("x");
 			expect(element(by.css('#submitButton')).getAttribute('disabled')).toBeTruthy();
 		});	
+
 
 		it("should prohibit names with \ / ? : * \" > < | characters", function(){
 			var inputField = element(by.model("data.name"));
@@ -63,6 +66,7 @@ describe('Scenario Templates', function() {
 			inputField.sendKeys("xx|");
 			expect(element(by.css('#submitButton')).getAttribute('disabled')).toBeTruthy();
 		});	
+
 
 		it("should require a name to be unique", function(){
 			var inputField = element(by.model("data.name"));
